@@ -86,7 +86,7 @@ def delete_application(id):
 @app.route('/api/descriptions', methods=['GET'])
 def get_all_descriptions():
     applications = Applications.query.all()
-    descriptions = [{"id": app_.id, "name": app_.name, "description": app_.description} for app_ in applications]
+    descriptions = [{"id": app_.id, "name": app_.name, "cost": app_.cost, "description": app_.description} for app_ in applications]
     return {"descriptions": descriptions}, 200
 
 # Running the app on a custom port
