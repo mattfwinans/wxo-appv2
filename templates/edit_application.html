@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Edit Application</h2>
+    <form method="POST">
+        <input type="text" name="name" value="{{ app_.name }}" required>
+        <input type="date" name="contract_start" value="{{ app_.contract_start }}" required>
+        <input type="text" name="cloud_provider" value="{{ app_.cloud_provider }}" required>
+        <input type="number" name="cost" value="{{ app_.cost }}" required>
+        <textarea name="description">{{ app_.description }}</textarea>
+        
+        <button type="submit">Update Application</button>
+    </form>
+{% endblock %}

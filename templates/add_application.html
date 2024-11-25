@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Add New Application</h2>
+    <form method="POST">
+        <input type="text" name="name" placeholder="Application Name" required>
+        <input type="date" name="contract_start" placeholder="Contract Start or Proposed Start Date" required>
+        <input type="text" name="cloud_provider" placeholder="Cloud Provider (e.g., IBM)" required>
+        <input type="number" name="cost" placeholder="Cost" required>
+        <textarea name="description" placeholder="Enter description details"></textarea>
+        
+        <button type="submit">Add Application</button>
+    </form>
+{% endblock %}

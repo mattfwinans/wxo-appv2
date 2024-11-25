@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: Application Management API
+  version: 1.0.2
+  description: A REST API for managing applications, their cloud providers, contract dates, costs, and descriptions.
+  contact:
+    name: Support Team
+    email: support@example.com
+servers:
+  - url: https://localhost:8000
+    description: Local Development Server
+
+security:
+  - apiKeyAuth: []
+
+paths:
+  /:
+    get:
+      summary: List all applications
+      security:
+        - apiKeyAuth: []
+      responses:
+        200:
+          description: A list of all applications.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Application"
+        401:
+          description: Unauthorized (missing or invalid API key).
+        500:
+          description: Server error.
+
+  /add:
+    post:
+      summary: Add a new application
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApplicationInput"
+      responses:
+        201:
+          description: Application created successfully.
+        401:
+          description: Unauthorized (missing or invalid API key).
+        400:
+          description: Invalid input.
+        500:
+          description: Server error.
+
+  /edit/{id}:
+    post:
+      summary: Edit an existing application
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApplicationInput"
+      responses:
+        200:
+          description: Application updated successfully.
+        401:
+          description: Unauthorized (missing or invalid API key).
+        404:
+          description: Application not found.
+        400:
+          description: Invalid input.
+        500:
+          description: Server error.
+
+  /view/{id}:
+    get:
+      summary: View an application
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Application details.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Application"
+        401:
+          description: Unauthorized (missing or invalid API key).
+        404:
+          description: Application not found.
+        500:
+          description: Server error.
+
+  /delete/{id}:
+    post:
+      summary: Delete an application
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Application deleted successfully.
+        401:
+          description: Unauthorized (missing or invalid API key).
+        404:
+          description: Application not found.
+        500:
+          description: Server error.
+
+  /api/descriptions:
+    get:
+      summary: Get all application descriptions
+      security:
+        - apiKeyAuth: []
+      responses:
+        200:
+          description: A list of all application descriptions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  descriptions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: "Application A"
+                        description:
+                          type: string
+                          example: "A detailed description of the application."
+        401:
+          description: Unauthorized (missing or invalid API key).
+        500:
+          description: Server error.
+
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    Application:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Application A"
+        contract_start:
+          type: string
+          format: date
+          example: "2024-01-01"
+        cloud_provider:
+          type: string
+          example: "AWS"
+        cost:
+          type: number
+          format: float
+          example: 1500.50
+        description:
+          type: string
+          example: "A description of the application and its workloads."
+    ApplicationInput:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Application A"
+        contract_start:
+          type: string
+          format: date
+          example: "2024-01-01"
+        cloud_provider:
+          type: string
+          example: "AWS"
+        cost:
+          type: number
+          format: float
+          example: 1500.50
+        description:
+          type: string
+          example: "A description of the application and its workloads."

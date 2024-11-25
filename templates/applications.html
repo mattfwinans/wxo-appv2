@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Application Management & Request Tool</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Contract Start (or Proposed Start) Date</th>
+                <th>Cloud Provider</th>
+                <th>Cost</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app_ in apps_ %}
+            <tr>
+                <td>{{ app_.name }}</td>
+                <td>{{ app_.contract_start }}</td>
+                <td>{{ app_.cloud_provider }}</td>
+                <td>${{ app_.cost }}</td>
+                <td>{{ app_.description }}</td>
+                <td>
+                    <a href="{{ url_for('view_application', id=app_.id) }}">View</a> |
+                    <a href="{{ url_for('edit_application', id=app_.id) }}">Edit</a> |
+                    <form action="{{ url_for('delete_application', id=app_.id) }}" method="POST" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('add_application') }}">
+        <button>Request New Application</button>
+    </a>
+{% endblock %}

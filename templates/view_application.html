@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Application Details</h2>
+    <div class="application-details">
+        <p><strong>Name:</strong> {{ app_.name }}</p>
+        <p><strong>Contract Start:</strong> {{ app_.contract_start }}</p>
+        <p><strong>Cloud Provider:</strong> {{ app_.cloud_provider }}</p>
+        <p><strong>Cost:</strong> ${{ app_.cost }}</p>
+        
+        <!-- Display Description -->
+        <p><strong>Description:</strong></p>
+        <p>{{ app_.description }}</p>
+    </div>
+    <a href="{{ url_for('edit_application', id=app_.id) }}">
+        <button>Edit Application</button>
+    </a>
+    <form action="{{ url_for('delete_application', id=app_.id) }}" method="POST" style="display:inline;">
+        <button type="submit">Delete Application</button>
+    </form>
+    <a href="{{ url_for('home') }}">
+        <button>Back to Application List</button>
+    </a>
+{% endblock %}
