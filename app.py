@@ -89,6 +89,37 @@ def get_all_descriptions():
     descriptions = [{"id": app_.id, "name": app_.name, "cost": app_.cost, "description": app_.description} for app_ in applications]
     return {"descriptions": descriptions}, 200
 
+
+@app.route('/api/applications/<int:id>', methods=['PUT'])
+def update_application(id):
+    app_ = Applications.query.get(id)
+    if not app_:
+        return {"message": "Application not found"}, 404
+
+    data = request.get_json()
+    if not data:
+        return {"message": "Invalid request format"}, 400
+
+    try:
+        app_.name = data.get('name', app_.name)
+        app_.contract_start = datetime.strptime(data.get('contract_start', app_.contract_start.isoformat()), "%Y-%m-%d").date()
+        app_.cloud_provider = data.get('cloud_provider', app_.cloud_provider)
+        app_.cost = float(data.get('cost', app_.cost))
+        app_.description = data.get('description', app_.description)
+        db.session.commit()
+    except Exception as e:
+        return {"message": f"Error updating application: {str(e)}"}, 500
+
+    return {
+        "id": app_.id,
+        "name": app_.name,
+        "contract_start": app_.contract_start.isoformat(),
+        "cloud_provider": app_.cloud_provider,
+        "cost": app_.cost,
+        "description": app_.description
+    }, 200
+
+
 # Running the app on a custom port
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000) 
